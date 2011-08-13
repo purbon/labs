@@ -14,11 +14,18 @@ class MyObject
 
 end
 
-def do_map(ma)
- na = []
- ma.each do |e|
-   na << e._do
- end
- na
+def do_tm(ma)
+  na = []
+  ma.each do |e|
+    na << e.abs
+  end
+  na
 end
 
+def do_bm(ma)
+  na = []
+  ma.each do |e|
+    na << e._do
+  end
+  na
+end
