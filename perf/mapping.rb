@@ -12,7 +12,7 @@ class MyObject
 
   def _do
     {
-      :label =>  (0...8).map{65.+(rand(25)).chr}.join
+      :label =>  self.string
     }
   end
 
@@ -33,7 +33,7 @@ end
 
 Benchmark.bm do |x|
   x.report("map") { a.map(&:_do) }
-  x.report("map block") { a.map { |e| e._do } }
+  x.report("map witb bloc") { a.map { |e| e._do } }
   x.report("my map") { do_map(a) }
 end
 
