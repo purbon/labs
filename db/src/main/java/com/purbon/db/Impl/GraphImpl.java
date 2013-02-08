@@ -10,12 +10,13 @@ import com.purbon.db.Node;
 
 public class GraphImpl implements Graph {
 
-	private String name;
-	private Map<Long, Node> nodesMap;
-	private Map<Long, Edge> edgesMap;
-	private Long nodes;
-	private Long edges;
+	protected String name;
+	protected Map<Long, Node> nodesMap;
+	protected Map<Long, Edge> edgesMap;
+	protected Long nodes;
+	protected Long edges;
 	
+ 	
 	public GraphImpl(String name) {
 		this.name     = name;
 		this.nodesMap = new HashMap<Long, Node>();
