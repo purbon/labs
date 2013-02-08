@@ -49,5 +49,18 @@ public class EdgeTest {
 		Node friend01 = person01.neighbours(EdgeDirection.IN).get(0);
 		assertEquals("purbon", friend01.get("name"));
 	}
+	
+	@Test
+	public void testNavigationEdges() {
+		Node person01 = graph.getNode(1L);
+		Node friend01 = person01.edges(EdgeDirection.OUT).get(0).getTarget();
+		assertEquals("warper", friend01.get("name"));
+	}
 
+	@Test
+	public void testNavigationEdgesIn() {
+		Node person01 = graph.getNode(2L);
+		Node friend01 = person01.edges(EdgeDirection.IN).get(0).getSource();
+		assertEquals("purbon", friend01.get("name"));
+	}
 }
