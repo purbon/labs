@@ -25,7 +25,7 @@ public class GraphImpl implements Graph {
  	}
 	
 	public Node addNode(String type) {
- 		Node node = new NodeImpl(type);
+ 		Node node = new NodeImpl(this, type);
  		nodesMap.put(++nodes, node);
 		return node;
 	}
@@ -43,10 +43,10 @@ public class GraphImpl implements Graph {
 	}
 
 	public Edge addEdge(String type, Node source, Node target) {
-		Edge edge = new EdgeImpl(type, source, target);
+		Edge edge = new EdgeImpl(this, type, source, target);
 		edgesMap.put(++edges, edge);
-		source.addEdge(edge, EdgeDirection.OUT);
-		target.addEdge(edge, EdgeDirection.IN);
+		((NodeImpl)source).addEdge(edge, EdgeDirection.OUT);
+		((NodeImpl)target).addEdge(edge, EdgeDirection.IN);
 		return edge;
 	}
 
@@ -57,6 +57,4 @@ public class GraphImpl implements Graph {
 	public Long edges() {
  		return edges;
 	}
-
-	
 }

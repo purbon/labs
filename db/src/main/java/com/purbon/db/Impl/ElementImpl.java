@@ -4,15 +4,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.purbon.db.Element;
+import com.purbon.db.Graph;
 
 public class ElementImpl implements Element {
 
 	private Map<String, Object> properties;
 	private String type;
+ 	protected Graph  graph;
 	
-	public ElementImpl(String type) {
+	public ElementImpl(Graph graph, String type) {
 		this.properties = new HashMap<String, Object>();
 		this.type       = type; 
+		this.graph      = graph;
 	}
 
 	public void set(String key, Object value) {

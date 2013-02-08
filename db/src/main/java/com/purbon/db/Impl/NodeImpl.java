@@ -6,14 +6,15 @@ import java.util.Map;
 
 import com.purbon.db.Edge;
 import com.purbon.db.EdgeDirection;
+import com.purbon.db.Graph;
 import com.purbon.db.Node;
 
 public class NodeImpl extends ElementImpl implements Node {
 
 	private Map<EdgeDirection, ArrayList<Edge>> edgesMap;
-	
-	public NodeImpl(String type) {
-		super(type);
+ 	
+	public NodeImpl(Graph graph, String type) {
+		super(graph, type);
 		this.edgesMap = new HashMap<EdgeDirection, ArrayList<Edge>>();
 		this.edgesMap.put(EdgeDirection.OUT, new ArrayList<Edge>());
 		this.edgesMap.put(EdgeDirection.IN, new ArrayList<Edge>());
@@ -50,6 +51,10 @@ public class NodeImpl extends ElementImpl implements Node {
 		return edges;
 	}
 
+	public void addEdge(String type, Node target) {
+ 		graph.addEdge(type, this, target);
+	}	
+	
 	public void addEdge(Edge edge, EdgeDirection dir) {
  		edgesMap.get(dir).add(edge);
  	}
@@ -57,6 +62,8 @@ public class NodeImpl extends ElementImpl implements Node {
 	@Override
 	public String toString() {
 		return super.toString();
-	}	
+	}
+
+
 	
 }

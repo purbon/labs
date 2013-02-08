@@ -63,4 +63,15 @@ public class EdgeTest {
 		Node friend01 = person01.edges(EdgeDirection.IN).get(0).getSource();
 		assertEquals("purbon", friend01.get("name"));
 	}
+	
+	@Test
+	public void testAddEdgeFromNode() {
+		Node person01 = graph.getNode(1L);
+		Node person03 = graph.addNode("person");
+		     person03.set("name", "jonhy");
+			 person01.addEdge("friend", person03);
+		assertEquals(2, person01.neighbours().size());
+		assertEquals("jonhy", person01.neighbours().get(1).get("name"));
+	}
+	
 }
