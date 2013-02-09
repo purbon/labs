@@ -2,7 +2,6 @@ package com.purbon.db.Storage;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectInputStream;
@@ -20,8 +19,6 @@ import com.purbon.db.Node;
 import com.purbon.db.Impl.NodeImpl;
 
 public class GraphStorage {
-
- 	private static final String GRAPH_FILE = "graphdb.gnetty";
  	
 	private MappedByteBuffer  mb;
 	private RandomAccessFile  file;
@@ -34,9 +31,8 @@ public class GraphStorage {
 		
 	}
 	
-	public void open(String dir) throws IOException, OverlappingFileLockException {
-		String fileName = dir+File.separatorChar+GRAPH_FILE;
- 		file = new RandomAccessFile(fileName,"rw");
+	public void open(String fileName) throws IOException, OverlappingFileLockException {
+  		file = new RandomAccessFile(fileName,"rw");
  		ch = file.getChannel();
  		lock = ch.lock();
  		mb = ch.map( FileChannel.MapMode.READ_WRITE, 0L, 2048L );
@@ -45,10 +41,14 @@ public class GraphStorage {
  
 
 	public void close() throws IOException {
-		lock.release();
-		ch.force(true);
-		ch.close();
-		file.close();
+		try {
+			lock.release();
+			ch.force(true);
+			ch.close();
+			file.close();
+		} catch (NullPointerException ex) {
+
+		}
 	}
 	
 	public Long nodes() {

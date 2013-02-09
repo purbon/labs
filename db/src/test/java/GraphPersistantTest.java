@@ -14,11 +14,14 @@ import com.purbon.db.Node;
 
 public class GraphPersistantTest {
 	
+ 	public static final String GRAPH_FILE  = "graphdb.gnetty";
+
+ 	
 	@Before
 	public void setUp() throws Exception {
 		GNetty netty = new GNetty();
  
-		netty.open("db/");
+		netty.open(GRAPH_FILE);
 		
 		Graph graph = netty.getGraph();
 		
@@ -32,13 +35,13 @@ public class GraphPersistantTest {
 
 	@After
 	public void tearDown() throws Exception {
-		new File("db/graphdb.gnetty").delete();
+		new File(GRAPH_FILE).delete();
 	}
 
 	@Test
 	public void testNodesCount() throws IOException {
 		GNetty netty = new GNetty();
-		netty.open("db/");
+		netty.open(GRAPH_FILE);
 		Graph graph = netty.getGraph();
  		assertEquals(Long.valueOf(2L), graph.nodes());
 		netty.close();
@@ -48,7 +51,7 @@ public class GraphPersistantTest {
 	@Test
 	public void testNodeProperty() throws IOException {
 		GNetty netty = new GNetty();
-		netty.open("db/");
+		netty.open(GRAPH_FILE);
 		Graph graph = netty.getGraph();
 		Node node   = graph.getNode(1);
 		assertEquals("purbon", node.get("name"));
@@ -58,7 +61,7 @@ public class GraphPersistantTest {
 	@Test
 	public void testNodes() throws IOException {
 		GNetty netty = new GNetty();
-		netty.open("db/");
+		netty.open(GRAPH_FILE);
 		Graph graph = netty.getGraph();
 		for(Long i=1L; i <= graph.nodes(); i++) {
 			Node node = graph.getNode(i);
