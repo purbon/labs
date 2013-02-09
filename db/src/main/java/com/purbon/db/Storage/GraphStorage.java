@@ -34,8 +34,7 @@ public class GraphStorage {
  		ch = file.getChannel();
  		lock = ch.lock();
  		mb = ch.map( FileChannel.MapMode.READ_WRITE, 0L, 2048L );
- 		//ch.tryLock();
- 	}
+  	}
 	
  
 
