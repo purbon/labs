@@ -21,7 +21,7 @@ public class GNetty {
 		graph.open(dir);
 	}
 	
-	public void flush() {
+	public void flush() throws IOException {
 		graph.save();
 	}
 	

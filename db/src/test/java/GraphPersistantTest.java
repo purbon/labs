@@ -22,7 +22,8 @@ public class GraphPersistantTest {
 		
 		Graph graph = netty.getGraph();
 		
-		graph.addNode("person");
+		Node node = graph.addNode("person");
+		node.set("name", "purbon");
 		graph.addNode("person");
 		
 		netty.flush();
@@ -40,6 +41,17 @@ public class GraphPersistantTest {
 		netty.open("db/");
 		Graph graph = netty.getGraph();
  		assertEquals(Long.valueOf(2L), graph.nodes());
+		netty.close();
+	}
+	
+
+	@Test
+	public void testNodeProperty() throws IOException {
+		GNetty netty = new GNetty();
+		netty.open("db/");
+		Graph graph = netty.getGraph();
+		Node node   = graph.getNode(1);
+		assertEquals("purbon", node.get("name"));
 		netty.close();
 	}
 	

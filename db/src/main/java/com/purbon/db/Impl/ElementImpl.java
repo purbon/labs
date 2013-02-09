@@ -2,6 +2,7 @@ package com.purbon.db.Impl;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import com.purbon.db.Element;
 import com.purbon.db.Graph;
@@ -24,6 +25,14 @@ public class ElementImpl implements Element {
 
 	public Object get(String key) {
  		return properties.get(key);
+	}
+	
+	public Set<String> keys() {
+		return properties.keySet();
+	}
+	
+	public int size() {
+		return properties.size();
 	}
 
 	public String getType() {

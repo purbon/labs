@@ -20,9 +20,13 @@ public class GraphPersistantImpl extends GraphImpl {
 		this.nodes = storage.nodes();
  		this.edges = storage.edges();
 		Long i = 0L;
-		for(NodeImpl node : storage.getNodes()) {
-			node.setGraph(this);
-			nodesMap.put(++i, node);
+		try {
+			for(NodeImpl node : storage.getNodes()) {
+				node.setGraph(this);
+				nodesMap.put(++i, node);
+			}
+		} catch (ClassNotFoundException e) {
+			throw new IOException(e);
 		}
 		setOpen(true);
 	}
@@ -40,7 +44,7 @@ public class GraphPersistantImpl extends GraphImpl {
 		setOpen(false);
 	}
 	
-	public void save() {
+	public void save() throws IOException {
 		storage.write(this);
 	}
 	

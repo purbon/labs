@@ -31,7 +31,7 @@ public class GraphImpl implements Graph {
 		return node;
 	}
 
-	public Node getNode(Long id) {
+	public Node getNode(long id) {
   		return nodesMap.get(id);
 	}
 
@@ -51,7 +51,7 @@ public class GraphImpl implements Graph {
 		return edge;
 	}
 
-	public Edge getEdge(Long id) {
+	public Edge getEdge(long id) {
  		return edgesMap.get(id);
 	}
 

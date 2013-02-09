@@ -1,7 +1,13 @@
 package com.purbon.db.Storage;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
@@ -55,14 +61,18 @@ public class GraphStorage {
 		return edges;
 	}
 	
-	public ArrayList<NodeImpl> getNodes() {
+	public ArrayList<NodeImpl> getNodes() throws ClassNotFoundException, IOException {
 		ArrayList<NodeImpl> nodesList = new ArrayList<NodeImpl>();
 		for(Long i=1L; i <= nodes; i++) {
-			int bytesCount = mb.getInt();
-			byte[] dst = new byte[bytesCount];
-			mb.get(dst);
-			String type = new String(dst);
-			nodesList.add(new NodeImpl(type));
+ 			String type = readString();
+			NodeImpl node = new NodeImpl(type);
+			int nProperties = mb.getInt();
+			for(int j=0; j < nProperties; j++) {
+				String key 	 = readString();
+				Object value = readObject(); 
+				node.set(key, value);
+			}
+			nodesList.add(node);
 		}
 		return nodesList;
 	}
@@ -71,18 +81,77 @@ public class GraphStorage {
 		mb.force();
  	}
 	
-	public void write(Graph graph) {
+	private String readString() {
+		byte[] dst = new byte[mb.getInt()];
+		mb.get(dst);
+		return new String(dst);
+	}
+	
+	private Object readObject() throws ClassNotFoundException, IOException {
+		byte[] dst = new byte[mb.getInt()];
+		mb.get(dst);
+		return bytesToObject(dst);
+	}
+	
+	public void write(Graph graph) throws IOException {
 		mb.rewind();
  		mb.putLong(graph.nodes());
 		mb.putLong(graph.edges());
  		for(Long i=1L; i <= graph.nodes(); i++) {
 			Node node = graph.getNode(i);
- 			mb.putInt(node.getType().getBytes().length);
-			mb.put(node.getType().getBytes());
+			writeString(node.getType());
+			mb.putInt(node.size());
+			for(String key : node.keys()) {
+				Object value = node.get(key);
+				writeString(key);
+				writeObject(value);
+			}
 		}
 		flush();
  	}
 	
 
+	private void writeString(String value) {
+		mb.putInt(value.getBytes().length);
+		mb.put(value.getBytes());
+	}
 	
+	private void writeObject(Object value) throws IOException {
+		byte [] myBytes = objectToBytes(value);
+		mb.putInt(myBytes.length);
+		mb.put(myBytes);
+	}
+	
+	private byte[] objectToBytes(Object value) throws IOException {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		ObjectOutput out = null;
+		byte[] yourBytes = null;
+
+		try {
+			out = new ObjectOutputStream(bos);
+			out.writeObject(value);
+			yourBytes = bos.toByteArray();
+
+		} finally {
+			out.close();
+			bos.close();
+		}
+
+		return yourBytes;
+	}
+
+	private Object bytesToObject(byte[] yourBytes) throws ClassNotFoundException, IOException {
+		ByteArrayInputStream bis = new ByteArrayInputStream(yourBytes);
+		ObjectInput in = null;
+		Object o = null;
+		try {
+			in = new ObjectInputStream(bis);
+			o = in.readObject();
+		} finally {
+			bis.close();
+			in.close();
+		}
+		return o;
+	}
+
 }
