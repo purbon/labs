@@ -3,8 +3,8 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 import java.io.IOException;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.purbon.db.GNetty;
@@ -16,10 +16,10 @@ public class TestSpace {
 
 
  	public static final String GRAPH_FILE  = "graphdb.gnetty";
- 	private GNetty netty;
+ 	private static GNetty netty;
  	
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void setUp() throws Exception {
 		netty = new GNetty();
 		netty.open(GRAPH_FILE);
 		Graph graph = netty.getGraph();
@@ -34,11 +34,9 @@ public class TestSpace {
 		netty.close();
 	}
 
-	@After
-	public void tearDown() throws Exception {
-		File file = new File(GRAPH_FILE);
-		System.out.println(GRAPH_FILE+" size: "+file.length());
-		new File(GRAPH_FILE).delete();
+	@AfterClass
+	public static void tearDown() throws Exception {
+  		new File(GRAPH_FILE).delete();
 	}
 
 	@Test
@@ -55,7 +53,7 @@ public class TestSpace {
 		GNetty netty = new GNetty();
 		netty.open(GRAPH_FILE);
 		Graph graph = netty.getGraph();
-		Node node = graph.getNode(1);
+		Node node = graph.getNode(99);
  		assertEquals("Value62", node.get("Key62"));
 		netty.close();
 	}
