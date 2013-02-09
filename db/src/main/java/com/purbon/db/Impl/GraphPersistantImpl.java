@@ -7,10 +7,12 @@ import com.purbon.db.Storage.GraphStorage;
 public class GraphPersistantImpl extends GraphImpl {
  
  	private GraphStorage storage;
+	private static boolean isOpen;
 	
 	public GraphPersistantImpl() {
 		super("main");
 		storage = new GraphStorage();
+		isOpen = false;
  	}
 	
 	public void open(String dir) throws IOException {
@@ -22,11 +24,20 @@ public class GraphPersistantImpl extends GraphImpl {
 			node.setGraph(this);
 			nodesMap.put(++i, node);
 		}
-
+		setOpen(true);
+	}
+	
+	public synchronized boolean isOpen() {
+		return isOpen;
+	}
+	
+	private synchronized void setOpen(boolean status) {
+		isOpen = status;
 	}
 	
 	public void close() throws IOException {
 		storage.close();
+		setOpen(false);
 	}
 	
 	public void save() {

@@ -1,7 +1,8 @@
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.channels.OverlappingFileLockException;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -35,14 +36,38 @@ public class DBTest {
 	}
 	
 	@Test
-	public void testOpenTwice() throws IOException {
+	public void testOpenTwiceFail() throws IOException {
 		GNetty netty1 = new GNetty();
 		netty1.open("db/");
 		GNetty netty2 = new GNetty();
-		netty2.open("db/");
-		netty1.close();
-		netty2.close();
-
+		try {
+			netty2.open("db/");
+			assertTrue(false);
+		} catch (OverlappingFileLockException ex) {
+			assertTrue(true);
+		} finally {
+			netty1.close();
+ 		}
+	}
+	
+	@Test
+	public void testOpenTwiceOk() throws IOException {
+		GNetty netty1 = new GNetty();
+		netty1.open("db/");
+		GNetty netty2 = new GNetty();
+		File n2File = new File("db1/");
+		n2File.mkdir();
+		try {
+			netty2.open("db1/");
+			assertTrue(true);
+		} catch (OverlappingFileLockException ex) {
+			assertTrue(false);
+		} finally {
+			netty1.close();
+			netty2.close();
+			new File("db1/graphdb.gnetty").delete();
+			new File("db1/").delete();
+ 		}
 	}
 	
 	@Test
