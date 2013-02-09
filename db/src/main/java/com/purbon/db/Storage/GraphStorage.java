@@ -35,8 +35,11 @@ public class GraphStorage {
   		file = new RandomAccessFile(fileName,"rw");
  		ch = file.getChannel();
  		lock = ch.lock();
- 		mb = ch.map( FileChannel.MapMode.READ_WRITE, 0L, 2048L );
-  	}
+ 		long size = ch.size();
+ 		if (size == 0) 
+ 			size = 2048L;
+ 		mb = ch.map( FileChannel.MapMode.READ_WRITE, 0L, size );
+   	}
 	
  
 
@@ -94,32 +97,32 @@ public class GraphStorage {
 	}
 	
 	public void write(Graph graph) throws IOException {
-		mb.rewind();
- 		mb.putLong(graph.nodes());
-		mb.putLong(graph.edges());
+		file.seek(0);
+		file.writeLong(graph.nodes());
+		file.writeLong(graph.edges());
  		for(Long i=1L; i <= graph.nodes(); i++) {
-			Node node = graph.getNode(i);
+ 			Node node = graph.getNode(i);
 			writeString(node.getType());
-			mb.putInt(node.size());
+			file.writeInt(node.size());
 			for(String key : node.keys()) {
 				Object value = node.get(key);
 				writeString(key);
 				writeObject(value);
 			}
-		}
+   		}
 		flush();
  	}
 	
 
-	private void writeString(String value) {
-		mb.putInt(value.getBytes().length);
-		mb.put(value.getBytes());
+	private void writeString(String value) throws IOException {
+		file.writeInt(value.getBytes().length);
+		file.write(value.getBytes());
 	}
 	
 	private void writeObject(Object value) throws IOException {
 		byte [] myBytes = objectToBytes(value);
-		mb.putInt(myBytes.length);
-		mb.put(myBytes);
+		file.writeInt(myBytes.length);
+		file.write(myBytes);
 	}
 	
 	private byte[] objectToBytes(Object value) throws IOException {
