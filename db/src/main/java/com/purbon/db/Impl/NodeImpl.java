@@ -19,6 +19,14 @@ public class NodeImpl extends ElementImpl implements Node {
 		this.edgesMap.put(EdgeDirection.OUT, new ArrayList<Edge>());
 		this.edgesMap.put(EdgeDirection.IN, new ArrayList<Edge>());
  	}
+	
+	public NodeImpl(String type) {
+		super(null, type);
+	}
+	
+	public void setGraph(Graph graph) {
+		this.graph = graph;
+	}
 
 	public ArrayList<Node> neighbours() {
 		return neighbours(EdgeDirection.OUT);

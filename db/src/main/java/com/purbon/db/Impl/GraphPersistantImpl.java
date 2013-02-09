@@ -16,7 +16,13 @@ public class GraphPersistantImpl extends GraphImpl {
 	public void open(String dir) throws IOException {
 		storage.open(dir);
 		this.nodes = storage.nodes();
-		this.edges = storage.edges();
+ 		this.edges = storage.edges();
+		Long i = 0L;
+		for(NodeImpl node : storage.getNodes()) {
+			node.setGraph(this);
+			nodesMap.put(++i, node);
+		}
+
 	}
 	
 	public void close() throws IOException {
