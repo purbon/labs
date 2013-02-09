@@ -9,7 +9,7 @@ import com.purbon.db.Graph;
 import com.purbon.db.Node;
 
 
-public class DBTest {
+public class GraphTest {
 
 	private Graph graph;
 	
