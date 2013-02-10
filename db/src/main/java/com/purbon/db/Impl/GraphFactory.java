@@ -12,7 +12,7 @@ public class GraphFactory {
 		if (type == "tgraph") {
 			return new GraphImpl(name);
 		} else if (type == "pgraph") {
-			return new GraphPersistantImpl();
+			return new PGraphImpl();
 		}
 		return null;
 	}

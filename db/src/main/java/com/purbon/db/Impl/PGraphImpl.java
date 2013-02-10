@@ -8,12 +8,12 @@ import com.purbon.db.Node;
 import com.purbon.db.PGraph;
 import com.purbon.db.Storage.GraphStorage;
 
-class GraphPersistantImpl extends GraphImpl implements PGraph {
+class PGraphImpl extends GraphImpl implements PGraph {
  
  	private GraphStorage storage;
 	private static boolean isOpen;
 	
-	public GraphPersistantImpl() {
+	public PGraphImpl() {
 		super("main");
 		storage = new GraphStorageImpl();
 		isOpen = false;
