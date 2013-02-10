@@ -6,7 +6,7 @@ import com.purbon.db.Edge;
 import com.purbon.db.Graph;
 import com.purbon.db.Node;
 
-public class EdgeImpl extends ElementImpl implements Edge, Serializable {
+class EdgeImpl extends ElementImpl implements Edge, Serializable {
 
 	private static final long serialVersionUID = 8926464755571981327L;
 	private Node source;

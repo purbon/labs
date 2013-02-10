@@ -4,17 +4,16 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.purbon.db.Impl.GraphImpl;
-import com.purbon.db.Impl.GraphPersistantImpl;
+import com.purbon.db.Impl.GraphFactory;
 
 public class GNetty {
 
 	private Map<String, Graph>  tmpGraphs;
-	private GraphPersistantImpl graph;
+	private PGraph graph;
 	
 	public GNetty() {
 		tmpGraphs = new HashMap<String, Graph>();
-		graph     = new GraphPersistantImpl();
+		graph     = (PGraph)GraphFactory.get("pgraph");
 	}
 	
 	public void open(String dir) throws IOException {
@@ -30,7 +29,7 @@ public class GNetty {
 	}
 	
 	public Graph newGraph(String name) {
-		Graph graph = new GraphImpl(name);
+		Graph graph = GraphFactory.get("tgraph");
 		tmpGraphs.put(name, graph);
 		return graph;
 	}
@@ -41,6 +40,6 @@ public class GNetty {
 	}
 	
 	public Graph getGraph() {
-		return graph;
+		return (Graph) graph;
 	}
 }

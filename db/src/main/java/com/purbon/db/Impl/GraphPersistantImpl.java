@@ -3,16 +3,19 @@ package com.purbon.db.Impl;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.purbon.db.Edge;
+import com.purbon.db.Node;
+import com.purbon.db.PGraph;
 import com.purbon.db.Storage.GraphStorage;
 
-public class GraphPersistantImpl extends GraphImpl {
+class GraphPersistantImpl extends GraphImpl implements PGraph {
  
  	private GraphStorage storage;
 	private static boolean isOpen;
 	
 	public GraphPersistantImpl() {
 		super("main");
-		storage = new GraphStorage();
+		storage = new GraphStorageImpl();
 		isOpen = false;
  	}
 	
@@ -23,14 +26,14 @@ public class GraphPersistantImpl extends GraphImpl {
 		
 		try {
 			long i = 0L;
-			ArrayList<NodeImpl> nodes = storage.getNodes();
-			for(NodeImpl node : nodes) {
-				node.setGraph(this);
+			ArrayList<Node> nodes = storage.getNodes();
+			for(Node node : nodes) {
+				((NodeImpl)node).setGraph(this);
 				nodesMap.put(++i, node);
 			}
 			i = 0L;
-			for(EdgeImpl edge : storage.getEdges(nodesMap)) {
-				edge.setGraph(this);
+			for(Edge edge : storage.getEdges(nodesMap)) {
+				((EdgeImpl)edge).setGraph(this);
 				edgesMap.put(++i, edge);
 			}
 			

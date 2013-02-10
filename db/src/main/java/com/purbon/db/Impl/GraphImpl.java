@@ -8,7 +8,7 @@ import com.purbon.db.EdgeDirection;
 import com.purbon.db.Graph;
 import com.purbon.db.Node;
 
-public class GraphImpl implements Graph {
+class GraphImpl implements Graph {
 
 	protected String name;
 	protected Map<Long, Node> nodesMap;

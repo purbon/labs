@@ -10,7 +10,7 @@ import com.purbon.db.EdgeDirection;
 import com.purbon.db.Graph;
 import com.purbon.db.Node;
 
-public class NodeImpl extends ElementImpl implements Node, Serializable {
+class NodeImpl extends ElementImpl implements Node, Serializable {
 
  
 	private static final long serialVersionUID = 3828298774769622620L;

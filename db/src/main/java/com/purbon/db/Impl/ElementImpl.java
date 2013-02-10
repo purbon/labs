@@ -7,7 +7,7 @@ import java.util.Set;
 import com.purbon.db.Element;
 import com.purbon.db.Graph;
 
-public class ElementImpl implements Element {
+class ElementImpl implements Element {
 
 	private Map<String, Object> properties;
 	private String type;
