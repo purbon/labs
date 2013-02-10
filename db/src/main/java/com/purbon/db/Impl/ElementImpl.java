@@ -11,20 +11,37 @@ public class ElementImpl implements Element {
 
 	private Map<String, Object> properties;
 	private String type;
+	protected long id;
  	protected Graph  graph;
 	
+ 	public ElementImpl() {
+ 		this(null, "");
+ 	}
 	public ElementImpl(Graph graph, String type) {
 		this.properties = new HashMap<String, Object>();
 		this.type       = type; 
 		this.graph      = graph;
+		this.id         = -1L;
 	}
 
 	public void set(String key, Object value) {
 		properties.put(key, value);
 	}
+	
+	public long getId() {
+		return id;
+	}
+	
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	public Object get(String key) {
  		return properties.get(key);
+	}
+	
+	public void setGraph(Graph graph) {
+		this.graph = graph;
 	}
 	
 	public Set<String> keys() {

@@ -1,5 +1,6 @@
 package com.purbon.db.Impl;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,23 +10,21 @@ import com.purbon.db.EdgeDirection;
 import com.purbon.db.Graph;
 import com.purbon.db.Node;
 
-public class NodeImpl extends ElementImpl implements Node {
+public class NodeImpl extends ElementImpl implements Node, Serializable {
 
-	private Map<EdgeDirection, ArrayList<Edge>> edgesMap;
- 	
+ 
+	private static final long serialVersionUID = 3828298774769622620L;
+	private Map<EdgeDirection, ArrayList<Edge>> edgesMap; 
+	
 	public NodeImpl(Graph graph, String type) {
 		super(graph, type);
-		this.edgesMap = new HashMap<EdgeDirection, ArrayList<Edge>>();
+ 		this.edgesMap = new HashMap<EdgeDirection, ArrayList<Edge>>();
 		this.edgesMap.put(EdgeDirection.OUT, new ArrayList<Edge>());
 		this.edgesMap.put(EdgeDirection.IN, new ArrayList<Edge>());
- 	}
+  	}
 	
 	public NodeImpl(String type) {
-		super(null, type);
-	}
-	
-	public void setGraph(Graph graph) {
-		this.graph = graph;
+		this(null, type);
 	}
 
 	public ArrayList<Node> neighbours() {
@@ -50,7 +49,7 @@ public class NodeImpl extends ElementImpl implements Node {
 
 	public ArrayList<Edge> edges(EdgeDirection dir) {
 		ArrayList<Edge> edges = new ArrayList<Edge>();
-		if (EdgeDirection.IN.equals(dir) || EdgeDirection.BOTH.equals(dir)) {
+  		if (EdgeDirection.IN.equals(dir) || EdgeDirection.BOTH.equals(dir)) {
 			edges.addAll(edgesMap.get(EdgeDirection.IN));
 		} 
 		if (EdgeDirection.OUT.equals(dir) || EdgeDirection.BOTH.equals(dir)) {
@@ -64,7 +63,7 @@ public class NodeImpl extends ElementImpl implements Node {
 	}	
 	
 	public void addEdge(Edge edge, EdgeDirection dir) {
- 		edgesMap.get(dir).add(edge);
+  		edgesMap.get(dir).add(edge);
  	}
 
 	@Override

@@ -1,6 +1,7 @@
 package com.purbon.db.Impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.purbon.db.Storage.GraphStorage;
 
@@ -19,12 +20,20 @@ public class GraphPersistantImpl extends GraphImpl {
 		storage.open(dir);
 		this.nodes = storage.nodes();
  		this.edges = storage.edges();
-		Long i = 0L;
+		
 		try {
-			for(NodeImpl node : storage.getNodes()) {
+			long i = 0L;
+			ArrayList<NodeImpl> nodes = storage.getNodes();
+			for(NodeImpl node : nodes) {
 				node.setGraph(this);
 				nodesMap.put(++i, node);
 			}
+			i = 0L;
+			for(EdgeImpl edge : storage.getEdges(nodesMap)) {
+				edge.setGraph(this);
+				edgesMap.put(++i, edge);
+			}
+			
 		} catch (ClassNotFoundException e) {
 			throw new IOException(e);
 		}

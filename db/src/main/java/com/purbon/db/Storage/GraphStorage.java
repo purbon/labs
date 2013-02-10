@@ -13,9 +13,14 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.channels.OverlappingFileLockException;
 import java.util.ArrayList;
+import java.util.Map;
 
+import com.purbon.db.Edge;
+import com.purbon.db.EdgeDirection;
+import com.purbon.db.Element;
 import com.purbon.db.Graph;
 import com.purbon.db.Node;
+import com.purbon.db.Impl.EdgeImpl;
 import com.purbon.db.Impl.NodeImpl;
 
 public class GraphStorage {
@@ -33,11 +38,11 @@ public class GraphStorage {
 	
 	public void open(String fileName) throws IOException, OverlappingFileLockException {
   		file = new RandomAccessFile(fileName,"rw");
- 		ch = file.getChannel();
+  		ch = file.getChannel();
  		lock = ch.lock();
  		long size = ch.size();
  		if (size == 0) 
- 			size = 2048L;
+ 			size = 81920L;
  		mb = ch.map( FileChannel.MapMode.READ_WRITE, 0L, size );
    	}
 	
@@ -67,11 +72,13 @@ public class GraphStorage {
 	public ArrayList<NodeImpl> getNodes() throws ClassNotFoundException, IOException {
 		ArrayList<NodeImpl> nodesList = new ArrayList<NodeImpl>();
 		for(Long i=1L; i <= nodes; i++) {
- 			String type = readString();
-			NodeImpl node = new NodeImpl(type);
+  			long   id   = mb.getLong();
+			String type = readString();
+   			NodeImpl node = new NodeImpl(type);
+ 			node.setId(id);
 			int nProperties = mb.getInt();
 			for(int j=0; j < nProperties; j++) {
-				String key 	 = readString();
+ 				String key 	 = readString();
 				Object value = readObject(); 
 				node.set(key, value);
 			}
@@ -80,14 +87,38 @@ public class GraphStorage {
 		return nodesList;
 	}
 	
+	public ArrayList<EdgeImpl> getEdges(Map<Long, Node> nodesTable) throws ClassNotFoundException, IOException {
+		ArrayList<EdgeImpl> edgesList = new ArrayList<EdgeImpl>();
+		for(Long i=1L; i <= edges; i++) {
+ 			long   id   = mb.getLong();
+ 			String type = readString();
+ 			long   srcId   = mb.getLong();
+ 			long   trgId   = mb.getLong();
+  			NodeImpl srcNode = (NodeImpl)nodesTable.get(srcId);
+ 			NodeImpl trgNode = (NodeImpl)nodesTable.get(trgId);
+  			EdgeImpl edge = new EdgeImpl(type, srcNode, trgNode);
+			edge.setId(id);
+			srcNode.addEdge(edge, EdgeDirection.OUT);
+			trgNode.addEdge(edge, EdgeDirection.IN);
+			int nProperties = mb.getInt();
+			for(int j=0; j < nProperties; j++) {
+				String key 	 = readString();
+				Object value = readObject(); 
+				edge.set(key, value);
+			}
+			edgesList.add(edge);
+		}
+		return edgesList;
+	}
+	
 	public void flush() {
 		mb.force();
  	}
 	
 	private String readString() {
-		byte[] dst = new byte[mb.getInt()];
+ 		byte[] dst = new byte[mb.getInt()];
 		mb.get(dst);
-		return new String(dst);
+ 		return new String(dst);
 	}
 	
 	private Object readObject() throws ClassNotFoundException, IOException {
@@ -102,18 +133,29 @@ public class GraphStorage {
 		file.writeLong(graph.edges());
  		for(Long i=1L; i <= graph.nodes(); i++) {
  			Node node = graph.getNode(i);
+   			file.writeLong(node.getId());
 			writeString(node.getType());
-			file.writeInt(node.size());
-			for(String key : node.keys()) {
-				Object value = node.get(key);
-				writeString(key);
-				writeObject(value);
-			}
+			writeProperties(node);
+   		}
+ 		for(Long i=1L; i <= graph.edges(); i++) {
+ 			Edge edge = graph.getEdge(i);
+ 			file.writeLong(edge.getId());
+			writeString(edge.getType());
+			file.writeLong(edge.getSource().getId());
+			file.writeLong(edge.getTarget().getId());
+			writeProperties(edge);
    		}
 		flush();
  	}
 	
-
+	private void writeProperties(Element element) throws IOException {
+		file.writeInt(element.size());
+		for(String key : element.keys()) {
+			Object value = element.get(key);
+			writeString(key);
+			writeObject(value);
+		}
+	}
 	private void writeString(String value) throws IOException {
 		file.writeInt(value.getBytes().length);
 		file.write(value.getBytes());
