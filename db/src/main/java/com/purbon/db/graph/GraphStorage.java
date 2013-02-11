@@ -22,4 +22,5 @@ public interface GraphStorage {
 	public void flush();
 	
 	public void write(Graph graph) throws IOException;
+	public void create(String file) throws IOException;
 }

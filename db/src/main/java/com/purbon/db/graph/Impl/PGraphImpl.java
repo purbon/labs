@@ -19,6 +19,11 @@ public class PGraphImpl extends GraphImpl implements PGraph {
 		isOpen = false;
  	}
 	
+	public void create(String file) throws IOException {
+		storage.create(file);
+		setOpen(true);
+	}
+	
 	public void open(String dir) throws IOException {
 		storage.open(dir);
 		this.nodes = storage.nodes();

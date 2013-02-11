@@ -16,6 +16,10 @@ public class GNetty {
 		graph     = (PGraph)GraphFactory.get("pgraph");
 	}
 	
+	public void create(String file) throws IOException {
+		graph.create(file);
+	}
+	
 	public void open(String dir) throws IOException {
 		graph.open(dir);
 	}

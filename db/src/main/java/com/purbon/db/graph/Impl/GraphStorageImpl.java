@@ -35,6 +35,16 @@ class GraphStorageImpl implements GraphStorage {
 		
 	}
 	
+	public void create(String fileName) throws IOException {
+		file = new RandomAccessFile(fileName,"rw");
+  		ch = file.getChannel();
+ 		lock = ch.lock();
+ 		long size = ch.size();
+ 		if (size == 0) 
+ 			size = 81920L;
+ 		mb = ch.map( FileChannel.MapMode.READ_WRITE, 0L, size );
+	}
+	
 	public void open(String fileName) throws IOException, OverlappingFileLockException {
   		file = new RandomAccessFile(fileName,"rw");
   		ch = file.getChannel();
