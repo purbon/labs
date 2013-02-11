@@ -1,4 +1,4 @@
-package com.purbon.db.Impl;
+package com.purbon.db.graph.Impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import com.purbon.db.Edge;
 import com.purbon.db.Node;
 import com.purbon.db.PGraph;
-import com.purbon.db.Storage.GraphStorage;
+import com.purbon.db.graph.GraphStorage;
 
-class PGraphImpl extends GraphImpl implements PGraph {
+public class PGraphImpl extends GraphImpl implements PGraph {
  
  	private GraphStorage storage;
 	private static boolean isOpen;

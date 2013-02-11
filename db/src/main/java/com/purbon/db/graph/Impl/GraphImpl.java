@@ -1,4 +1,4 @@
-package com.purbon.db.Impl;
+package com.purbon.db.graph.Impl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +8,7 @@ import com.purbon.db.EdgeDirection;
 import com.purbon.db.Graph;
 import com.purbon.db.Node;
 
-class GraphImpl implements Graph {
+public class GraphImpl implements Graph {
 
 	protected String name;
 	protected Map<Long, Node> nodesMap;

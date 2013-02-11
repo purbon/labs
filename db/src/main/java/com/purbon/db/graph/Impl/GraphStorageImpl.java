@@ -1,4 +1,4 @@
-package com.purbon.db.Impl;
+package com.purbon.db.graph.Impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -20,9 +20,7 @@ import com.purbon.db.EdgeDirection;
 import com.purbon.db.Element;
 import com.purbon.db.Graph;
 import com.purbon.db.Node;
-import com.purbon.db.Impl.EdgeImpl;
-import com.purbon.db.Impl.NodeImpl;
-import com.purbon.db.Storage.GraphStorage;
+import com.purbon.db.graph.GraphStorage;
 
 class GraphStorageImpl implements GraphStorage {
  	

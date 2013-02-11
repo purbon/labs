@@ -1,4 +1,4 @@
-package com.purbon.db.Storage;
+package com.purbon.db.graph;
 
 import java.io.IOException;
 import java.nio.channels.OverlappingFileLockException;

@@ -1,4 +1,4 @@
-package com.purbon.db.Impl;
+package com.purbon.db.graph.Impl;
 
 import java.io.Serializable;
 import java.util.ArrayList;

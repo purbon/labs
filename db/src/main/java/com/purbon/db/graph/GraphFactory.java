@@ -1,6 +1,8 @@
-package com.purbon.db.Impl;
+package com.purbon.db.graph;
 
 import com.purbon.db.Graph;
+import com.purbon.db.graph.Impl.GraphImpl;
+import com.purbon.db.graph.Impl.PGraphImpl;
 
 public class GraphFactory {
 

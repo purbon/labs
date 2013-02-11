@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.purbon.db.Impl.GraphFactory;
+import com.purbon.db.graph.GraphFactory;
 
 public class GNetty {
 
