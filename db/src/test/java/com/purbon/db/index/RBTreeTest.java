@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.purbon.db.index.RBTree.Color;
+import com.purbon.db.index.RBTree.RBTreeNode;
 
 public class RBTreeTest {
 
@@ -38,7 +39,32 @@ public class RBTreeTest {
 
 	@Test
 	public void testRemoveAndDestroy() {
-
+		tree.delete(8);
+		@SuppressWarnings("rawtypes")
+		RBTreeNode node = tree.search(6);
+		assertEquals(Color.RED, node.color);
+		assertEquals(tree.search(13), node.parent);
+		assertEquals(tree.search(1),  node.leftNode);
+		assertEquals(tree.search(11), node.rightNode);
 	}
-
+	
+	@Test
+	public void testRemoveAndDestroy2() {
+ 		tree.delete(1);
+		@SuppressWarnings("rawtypes")
+		RBTreeNode node = tree.search(6);
+		assertEquals(Color.BLACK, node.color);
+		assertEquals(tree.search(8), node.parent);
+		assertNull(node.leftNode);
+		assertNull(node.rightNode); 
+ 	}
+	
+	@Test
+	public void testRemoveAndDestroyRoot() {
+ 		tree.delete(13);
+		assertEquals(tree.search(11), tree.getRoot());
+ 	}
+	
+	
+	
 }
