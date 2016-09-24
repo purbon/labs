@@ -1,0 +1,9 @@
+# This is a demo hookaido config file in a yaml format
+
+inputs: 
+  - 
+    name: generator
+    raw: "Dummy line to be generated"
+outputs: 
+  - 
+    name: stdout
