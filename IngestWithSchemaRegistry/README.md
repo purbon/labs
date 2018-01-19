@@ -68,6 +68,11 @@ You want to get your hands dirty, to test this example you should:
 Next step is to send your events and see how the validation is being
 performed.
 
+Your nifi pipeline should look something like:
+
+![nifi pipeline](https://raw.githubusercontent.com/purbon/labs/master/IngestWithSchemaRegistry/img/schema-registry-pipe.png "Apache NiFi pipeline")
+
+
 I know this document is brief, if you have more question don't hesitate
 to open an issue here and we can discuss.
 
