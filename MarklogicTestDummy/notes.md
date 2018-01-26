@@ -31,6 +31,41 @@ Combined Query, Query By Example, String Query, Structured Query.
 
 - Semantic Searches. MarkLogic allows you use SPARQL 
 
+
+### How score is calculated
+
+When you perform a cts:search operation, MarkLogic Server produces a result set that includes items matching the cts:query expression and, for each 
+matching item, a score.
+
+Different methods to do the calculation:
+
+* log(tf)*idf: log(term frequency) * (inverse document frequency) TF-IDF
+* log(tf): log(term frequency)
+* Simple Term Match: score of 8*weight for each matching term in the cts:query expression.  and then scales the score up by multiplying by 256.
+* Random Score: a randomly-generated score.
+* Term Frequency: take into account term frequency, will, by default, normalize the term frequency based on the size of the document.
+
+use the relevance-trace option with cts:relevance-info to explore details.
+
+
+Scores are fragment-based, so term frequency and document frequency are calculated based on term frequency per fragment and fragment frequency respectively.
+Scores are based on unfiltered searches, so they include false-positive results.
+
+Fragments == "Sharding":
+When loading data into a database, you have the option of specifying how XML documents are partitioned for storage into smaller blocks of information called fragments. 
+For large XML documents, size can be an issue, and using fragments may help manage performance of your system. 
+In general, fragments for XML documents should be sized between 10K and 100K. 
+
+
+Weights can be used to influence scores. 
+You can also boost by proximity.
+Users can also boost relevancy by using a secondary index.
+
+By default, range queries do not influence relevance score. 
+However, you can enable range and geospatial queries score contribution using the score-function and slope-factor options.
+
+If you enable scoring for a given range query, it has the same impact as a word query. 
+
 ### Suggestion and Auto Complete:
 
 The search:suggest function returns suggestions that match a wildcarded string, and it is used in query-completion applications.
